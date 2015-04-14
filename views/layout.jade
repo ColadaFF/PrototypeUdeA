@@ -4,13 +4,19 @@ html
         title= title
         link(rel='stylesheet', href='/stylesheets/style.css')
         link(rel='stylesheet', href='http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css')
-        link(rel='stylesheet', href='/bower/bootstrap/dist/css/bootstrap.css')
+        link(rel='stylesheet', href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css")
 
-    body
+    body(ng-app="prototypeUForm" ng-controller="prototypeFormCtrl as vm")
         block content
 
     script(src="/bower/jquery/dist/jquery.js")
-    script(src="/bower/bootstrap/dist/js/bootstrap.js")
     script(src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js")
+    script(src="/bower/api-check/dist/apiCheck.js")
+    script(src="/bower/angular/angular.js")
+    script(src="/bower/angular-formly/dist/formly.js")
+    script(src="/bower/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.js")
+    script(src="/bower/bootstrap/dist/js/bootstrap.js")
+    script(src="/bower/angular-resource/angular-resource.js")
+    script(src="/app/app.js")
     script(src="/js/main.js")
     script(src="/js/GeoJson.js")

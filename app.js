@@ -59,6 +59,29 @@ app.use('/', routes);
 app.use('/users', users);
 
 
+app.get('/collection/antioquia/names', function (req, res) {
+    MongoClient.connect(url, function (err, db) {
+        assert.equal(null, err);
+        console.log("Connected correctly to server");
+        var findDocuments = function (db, callback) {
+            // Get the documents collection
+            var collection = db.collection('colombia_format_3');
+            // Find some documents
+            collection.find({'properties.DEPNAME': 'Antioquia'}, {
+                _id: 1,
+                properties: 1
+            }).toArray(function (err, docs) {
+                assert.equal(err, null);
+                console.log("Found the following records");
+                res.json(docs);
+            });
+        };
+        findDocuments(db, function () {
+            db.close();
+        });
+
+    });
+});
 app.get('/collection/antioquia', function (req, res) {
     MongoClient.connect(url, function (err, db) {
         assert.equal(null, err);

@@ -4,3 +4,16 @@ block content
 
     div.col-md-8
         div#map.container-fluid
+
+    div.col-md-4
+        form(ng-submit="vm.onSubmit()", novalidate)
+            formly-form(model="vm.model", fields="vm.formFields")
+                button(type="submit").btn.btn-primary.submit-button Guardar
+
+    script(type="text/ng-template", id="loading.html").
+        <div ng-if="to.loading.$$state.status === 0" style="line-height:34px">
+        Cargando
+        </div>
+        <div ng-if="to.loading.$$state.status !== 0">
+        <formly-transclude></formly-transclude>
+        </div>

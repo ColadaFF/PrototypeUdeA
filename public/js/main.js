@@ -13,6 +13,12 @@ L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
     id: 'examples.map-20v6611k'
 }).addTo(map);
 
+function onEachFeature(feature, layer) {
+    layer.on({
+        click: zoomToFeature
+    });
+}
+
 GeoData = {};
 (function ($) {
     $.ajax({

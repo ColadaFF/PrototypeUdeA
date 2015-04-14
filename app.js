@@ -67,8 +67,18 @@ app.get('/collection/antioquia/names', function (req, res) {
             // Get the documents collection
             var collection = db.collection('colombia_format_3');
             // Find some documents
+            collection.mapReduce(function () {
+                if (this.properties.DEPNAME === 'Antioquia') {
+                    emit(this.properties.MUN_P_CODE, this);
+                }
+            }, function (id, value) {
+                futureCollection = {};
+                futureCollection[id] =
+                futureCollection.push({type: 'Feature', properties: value.properties, geometry: value.geometry})
+            }, {out: {inline: 1}});
+
             collection.find({'properties.DEPNAME': 'Antioquia'}, {
-                _id: 1,
+                _id: 0,
                 properties: 1
             }).toArray(function (err, docs) {
                 assert.equal(err, null);
@@ -111,6 +121,7 @@ app.get('/collection/antioquia', function (req, res) {
 
     });
 });
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

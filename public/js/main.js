@@ -30,10 +30,31 @@ info.onAdd = function (map) {
 };
 
 info.update = function (props) {
-    console.log(props);
-    this._div.innerHTML = '<h4>US Population Density</h4>' + (props ?
-    '<b>' + props.MUNNAME + '</b><br />' + props.density + ' people / mi<sup>2</sup>'
-        : 'Hover over a state');
+    if (props) {
+        var value = $('#optionSelect').val();
+        var desease = {
+            name: "",
+            male: 0,
+            female: 0
+        };
+
+        if (value != '-1') {
+            for (var j = 0; j < props.indicators[value].deathRates.length; j++) {
+                var rate = props.indicators[value].deathRates[j];
+                desease.male += rate.male;
+                desease.female += rate.female;
+            }
+
+            this._div.innerHTML = (props ? '<h4>Información detallada</h4>'+
+            '<b> Municipio: </b>' + props.MUNNAME +
+            '<br /> <Strong> Hombres: </Strong>' + desease.male + '<br />' +
+            '<Strong> Mujeres: </Strong>' + desease.female + '<br />'
+                : 'Seleccione un municipio');
+        }
+    }else{
+        this._div.innerHTML = ' <h4>Información detallada</h4> Seleccione un municipio';
+    }
+
 };
 
 info.addTo(map);
@@ -51,7 +72,7 @@ function getColor(feature) {
             }
         }
         d /= (10 * 5);
-    }else{
+    } else {
         var deseaseIndex = parseInt($('#optionSelect').val());
         for (var j = 0; j < indicators[deseaseIndex].deathRates.length; j++) {
             var rate = indicators[deseaseIndex].deathRates[j];
@@ -119,7 +140,7 @@ var geojson;
 
 function loadData() {
     $.ajax({
-        url: 'http://localhost:3000/collection/antioquia',
+        url: '/collection/antioquia',
         success: function (data, textStatus, jqXHR) {
             geojson = L.geoJson(data, {
                 style: style,

@@ -2,9 +2,6 @@ extends layout
 
 block content
 
-    div.col-md-8
-        div#map.container-fluid
-
     div.col-md-4
         select#optionSelect
             option(value="-1") Seleccione enfermedad
@@ -13,6 +10,11 @@ block content
             option(value="2") Cirrosis y otras enfermedades cr&oacute;nicas del h&iacute;gado
             option(value="3") Diabetes mellitu
             option(value="4") Enfermedades cerebrovasculares
+
+    div.col-md-12
+        div#map.container-fluid
+
+
 
     script(type="text/ng-template", id="loading.html").
         <div ng-if="to.loading.$$state.status === 0" style="line-height:34px">

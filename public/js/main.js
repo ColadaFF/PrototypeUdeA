@@ -3,7 +3,7 @@
  */
 
 
-var map = L.map('map').setView([7.1613433, -75.573896, 8], 8);
+var map = L.map('map').setView([7.1613433, -75.573896, 8], 7);
 
 L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
     maxZoom: 18,
@@ -45,19 +45,31 @@ info.update = function (props) {
                 desease.female += rate.female;
             }
 
-            this._div.innerHTML = (props ? '<h4>Información detallada</h4>'+
+            this._div.innerHTML = (props ? '<h4>Información detallada</h4>' +
             '<b> Municipio: </b>' + props.MUNNAME +
             '<br /> <Strong> Hombres: </Strong>' + desease.male + '<br />' +
             '<Strong> Mujeres: </Strong>' + desease.female + '<br />'
                 : 'Seleccione un municipio');
         }
-    }else{
+    } else {
         this._div.innerHTML = ' <h4>Información detallada</h4> Seleccione un municipio';
     }
 
 };
 
 info.addTo(map);
+
+
+function getColorLegend(d) {
+    return d > 47 ? '#800026' :
+        d > 44 ? '#BD0026' :
+            d > 41 ? '#E31A1C' :
+                d > 38 ? '#FC4E2A' :
+                    d > 35 ? '#FD8D3C' :
+                        d > 25 ? '#FEB24C' :
+                            d > 10 ? '#FED976' :
+                                '#FFEDA0';
+}
 
 
 // get color depending on population density value
@@ -147,6 +159,28 @@ function loadData() {
                 onEachFeature: onEachFeature
             });
             geojson.addTo(map);
+            var legend = L.control({position: 'bottomright'});
+
+            legend.onAdd = function (map) {
+                var div = L.DomUtil.create('div', 'info legend'),
+                    grades = [0, 10, 25, 35, 38, 41, 44, 47],
+                    labels = [],
+                    from, to;
+
+                for (var i = 0; i < grades.length; i++) {
+                    from = grades[i];
+                    to = grades[i + 1];
+
+                    labels.push(
+                        '<i style="background:' + getColorLegend(from + 1) + '"></i> ' +
+                        from + (to ? '&ndash;' + to : '+'));
+                }
+
+                div.innerHTML = labels.join('<br>');
+                return div;
+            };
+
+            legend.addTo(map);
         }
     });
 }
@@ -159,9 +193,3 @@ GeoData = {};
     });
     loadData();
 })(jQuery);
-
-
-
-
-
-

@@ -58,7 +58,7 @@ app.use("/bower", express.static(__dirname + '/bower_components'));
 app.use('/', routes);
 app.use('/users', users);
 
-
+/*
 app.get('/collection/antioquia/names', function (req, res) {
     MongoClient.connect(url, function (err, db) {
         assert.equal(null, err);
@@ -91,7 +91,7 @@ app.get('/collection/antioquia/names', function (req, res) {
         });
 
     });
-});
+}); */
 app.get('/collection/antioquia', function (req, res) {
     MongoClient.connect(url, function (err, db) {
         assert.equal(null, err);

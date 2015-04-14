@@ -5,13 +5,13 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://192.168.1.52/test');
+mongoose.connect('mongodb://192.168.1.28/test');
 
 
 var MongoClient = require('mongodb').MongoClient
     , assert = require('assert');
 
-var url = 'mongodb://192.168.1.52:27017/test';
+var url = 'mongodb://192.168.1.28:27017/test';
 // Use connect method to connect to the Server
 MongoClient.connect(url, function (err, db) {
     assert.equal(null, err);

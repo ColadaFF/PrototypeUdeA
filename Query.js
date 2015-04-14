@@ -50,4 +50,21 @@ db.colombia_format_3.mapReduce(functionMap, functionReduce, {out: 'Antioquia_Mun
 // mongoimport --host 192.168.1.52 --port 27017 --jsonArray --file Documents/colombia_format_3.json
 
 
-db.colombia_format_3.find({'properties.DEPNAME': 'Antioquia'}, {_id: 0, properties: 1, geometry: 1})
+db.colombia_format_3.find({'properties.DEPNAME': 'Antioquia'}, {_id: 0, properties: 1, geometry: 1});
+
+var getRand = function(min, max){
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+db.colombia_format_3.find({'properties.DEPNAME': 'Antioquia'}).forEach(function(departamento){
+    departamento.properties.indicators = [];
+    var deseases = ['Aterosclerosis', 'Bronquitis, enfisema y otras enfermedades pulmonares obstructivas crónicas', 'Cirrosis y otras enfermedades crónicas del hígado', 'Diabetes mellitus', 'Enfermedades cerebrovasculares'];
+    for(var i = 0; i < deseases.length; i++){
+        var indicator = {description: deseases[i], deathRates: []};
+        departamento.properties.indicators[i] = indicator;
+        for(var j = 0; j < 10; j++){
+            indicator.deathRates[j] = {year: 2004+j, male: getRand(1, 40), female: getRand(1, 40)};
+        }
+    }
+    db.colombia_format_3.save(departamento);
+});
+

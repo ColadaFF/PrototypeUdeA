@@ -30,8 +30,8 @@
                 templateOptions: {
                     label: 'Municipio',
                     options: [],
-                    value: '_id',
-                    name: 'properties.HRname',
+                    valueProp: '_id',
+                    labelProp: 'properties.HRname',
                     required: true,
                     placeholder: 'Seleccione un municipio de la lista'
                 },

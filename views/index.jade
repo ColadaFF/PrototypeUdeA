@@ -6,9 +6,13 @@ block content
         div#map.container-fluid
 
     div.col-md-4
-        form(ng-submit="vm.onSubmit()", novalidate)
-            formly-form(model="vm.model", fields="vm.formFields")
-                button(type="submit").btn.btn-primary.submit-button Guardar
+        select#optionSelect
+            option(value="-1") Seleccione enfermedad
+            option(value="0") Aterosclerosis
+            option(value="1") Bronquitis, enfisema y otras enfermedades pulmonares obstructivas cr&oacute;nicas
+            option(value="2") Cirrosis y otras enfermedades cr&oacute;nicas del h&iacute;gado
+            option(value="3") Diabetes mellitu
+            option(value="4") Enfermedades cerebrovasculares
 
     script(type="text/ng-template", id="loading.html").
         <div ng-if="to.loading.$$state.status === 0" style="line-height:34px">

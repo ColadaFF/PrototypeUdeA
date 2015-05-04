@@ -3,7 +3,26 @@
  */
 
 
-var map = L.map('map').setView([7.1613433, -75.573896, 8], 7);
+var map = L.map('map', {drawControl: true}).setView([7.1613433, -75.573896, 8], 7);
+
+// Initialise the FeatureGroup to store editable layers
+var drawnItems = new L.FeatureGroup();
+map.addLayer(drawnItems);
+
+map.on('draw:created', function (e) {
+    var type = e.layerType,
+        layer = e.layer,
+        response = [];
+    e.layer._latlngs.forEach(function (value) {
+        var current = [value.lat, value.lng];
+        response.push(current);
+    });
+    console.log(JSON.stringify(response));
+
+    // Do whatever else you need to. (save to db, add to map etc)
+    map.addLayer(layer);
+});
+
 
 L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
     maxZoom: 18,

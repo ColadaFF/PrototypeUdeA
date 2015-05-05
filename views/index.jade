@@ -26,13 +26,3 @@ block content
             input#MUNNAME(type=text,placeholder='Municipio')
         div.input-group
             button#generar Generar
-
-
-
-    script(type="text/ng-template", id="loading.html").
-        <div ng-if="to.loading.$$state.status === 0" style="line-height:34px">
-        Cargando
-        </div>
-        <div ng-if="to.loading.$$state.status !== 0">
-        <formly-transclude></formly-transclude>
-        </div>

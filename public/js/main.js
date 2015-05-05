@@ -17,7 +17,7 @@ map.on('draw:created', function (e) {
         var current = [value.lat, value.lng];
         response.push(current);
     });
-    console.log(JSON.stringify(response));
+    $("#textAreaGeo").text(JSON.stringify(response));
 
     // Do whatever else you need to. (save to db, add to map etc)
     map.addLayer(layer);

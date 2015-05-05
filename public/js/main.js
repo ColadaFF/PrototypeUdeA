@@ -8,16 +8,16 @@ var map = L.map('map', {drawControl: true}).setView([7.1613433, -75.573896, 8], 
 // Initialise the FeatureGroup to store editable layers
 var drawnItems = new L.FeatureGroup();
 map.addLayer(drawnItems);
-
+var jsonCords;
 map.on('draw:created', function (e) {
     var type = e.layerType,
-        layer = e.layer,
-        response = [];
+            layer = e.layer,
+            response = [];
     e.layer._latlngs.forEach(function (value) {
         var current = [value.lat, value.lng];
         response.push(current);
     });
-    $("#textAreaGeo").text(JSON.stringify(response));
+    jsonCords = response;
 
     // Do whatever else you need to. (save to db, add to map etc)
     map.addLayer(layer);
@@ -27,8 +27,8 @@ map.on('draw:created', function (e) {
 L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
     maxZoom: 18,
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-    '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-    'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+            '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+            'Imagery © <a href="http://mapbox.com">Mapbox</a>',
     id: 'examples.map-20v6611k'
 }).addTo(map);
 
@@ -65,10 +65,10 @@ info.update = function (props) {
             }
 
             this._div.innerHTML = (props ? '<h4>Información detallada</h4>' +
-            '<b> Municipio: </b>' + props.MUNNAME +
-            '<br /> <Strong> Hombres: </Strong>' + desease.male + '<br />' +
-            '<Strong> Mujeres: </Strong>' + desease.female + '<br />'
-                : 'Seleccione un municipio');
+                    '<b> Municipio: </b>' + props.MUNNAME +
+                    '<br /> <Strong> Hombres: </Strong>' + desease.male + '<br />' +
+                    '<Strong> Mujeres: </Strong>' + desease.female + '<br />'
+                    : 'Seleccione un municipio');
         }
     } else {
         this._div.innerHTML = ' <h4>Información detallada</h4> Seleccione un municipio';
@@ -81,13 +81,13 @@ info.addTo(map);
 
 function getColorLegend(d) {
     return d > 47 ? '#800026' :
-        d > 44 ? '#BD0026' :
+            d > 44 ? '#BD0026' :
             d > 41 ? '#E31A1C' :
-                d > 38 ? '#FC4E2A' :
-                    d > 35 ? '#FD8D3C' :
-                        d > 25 ? '#FEB24C' :
-                            d > 10 ? '#FED976' :
-                                '#FFEDA0';
+            d > 38 ? '#FC4E2A' :
+            d > 35 ? '#FD8D3C' :
+            d > 25 ? '#FEB24C' :
+            d > 10 ? '#FED976' :
+            '#FFEDA0';
 }
 
 
@@ -112,13 +112,13 @@ function getColor(feature) {
         d /= 10;
     }
     return d > 47 ? '#800026' :
-        d > 44 ? '#BD0026' :
+            d > 44 ? '#BD0026' :
             d > 41 ? '#E31A1C' :
-                d > 38 ? '#FC4E2A' :
-                    d > 35 ? '#FD8D3C' :
-                        d > 25 ? '#FEB24C' :
-                            d > 10 ? '#FED976' :
-                                '#FFEDA0';
+            d > 38 ? '#FC4E2A' :
+            d > 35 ? '#FD8D3C' :
+            d > 25 ? '#FEB24C' :
+            d > 10 ? '#FED976' :
+            '#FFEDA0';
 }
 
 
@@ -182,17 +182,17 @@ function loadData() {
 
             legend.onAdd = function (map) {
                 var div = L.DomUtil.create('div', 'info legend'),
-                    grades = [0, 10, 25, 35, 38, 41, 44, 47],
-                    labels = [],
-                    from, to;
+                        grades = [0, 10, 25, 35, 38, 41, 44, 47],
+                        labels = [],
+                        from, to;
 
                 for (var i = 0; i < grades.length; i++) {
                     from = grades[i];
                     to = grades[i + 1];
 
                     labels.push(
-                        '<i style="background:' + getColorLegend(from + 1) + '"></i> ' +
-                        from + (to ? '&ndash;' + to : '+'));
+                            '<i style="background:' + getColorLegend(from + 1) + '"></i> ' +
+                            from + (to ? '&ndash;' + to : '+'));
                 }
 
                 div.innerHTML = labels.join('<br>');
@@ -203,7 +203,9 @@ function loadData() {
         }
     });
 }
+function generarJSON() {
 
+}
 GeoData = {};
 (function ($) {
     $('select').selectpicker();
@@ -211,4 +213,34 @@ GeoData = {};
         geojson.setStyle(style);
     });
     loadData();
+    $('#generar').click(function (e) {
+        e.preventDefault();
+        var depCode = $('#DEP_P_CODE').val();
+        var depName = $('#DEPNAME').val();
+        var munCode = $('#MUN_P_CODE').val();
+        var munName = $('#MUNNAME').val();
+        var obj = {
+            "geometry": {
+                "coordinates": jsonCords,
+                "type": "MultiPolygon"
+            },
+            "geometry_name": "the_geom",
+            "id": "division_municipal_de_colombia_1.1",
+            "properties": {
+                "DEPNAME": depName,
+                "OBJECTID": 1.0000000000000000,
+                "HRparent": "CO"+depCode,
+                "HRpcode": "CO"+depCode+munCode,
+                "MUNNAME": munName,
+                "MUN_P_CODE": depCode+''+munCode,
+                "MUN_Pcode": "CO"+depCode+munCode,
+                "DEP_P_CODE": depCode,
+                "DEP_Pcode": "CO"+depCode,
+                "HRname": munName,
+                "Pe_Need": 0.0000000000000000
+            },
+            "type": "Feature"
+        }
+        $("#textAreaGeo").text(JSON.stringify(obj));
+    });
 })(jQuery);

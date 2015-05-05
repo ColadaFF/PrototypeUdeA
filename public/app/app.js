@@ -51,7 +51,7 @@
             alert(JSON.stringify(vm.model), null, 2);
         }
     });
-    app.controller('prototypeFormCtrl', function prototypeFormCtrl(formlyVersion) {
+    app.controller('extracterCtrl', function prototypeFormCtrl(formlyVersion) {
         var vm = this;
         vm.onSubmit = onSubmit;
         vm.title = 'Agregar Indicadores';

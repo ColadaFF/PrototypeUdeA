@@ -221,7 +221,7 @@ GeoData = {};
         var munName = $('#MUNNAME').val();
         var obj = {
             "geometry": {
-                "coordinates": jsonCords,
+                "coordinates": [jsonCords],
                 "type": "MultiPolygon"
             },
             "geometry_name": "the_geom",
